@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Jewellery System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            color: #333333;
+            line-height: 1.6;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 15px;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #444444;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fafbfc;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #bfa15f;
+            background-color: #ffffff;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #bfa15f;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 5px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #a88c4d;
+        }
+
+        /* Error Banner */
+        .error-box {
+            background-color: #fde8e8;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+            border-left: 4px solid #e53e3e;
+        }
+
+        /* Bill Card */
+        .details-card {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fffdf7;
+            border: 1px solid #f1e4c3;
+            border-radius: 8px;
+        }
+
+        .details-card h2 {
+            color: #8a6d2f;
+            font-size: 18px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #e2cf9f;
+            padding-bottom: 8px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0e7d5;
+            font-size: 15px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background-color: #f7eccb;
+            color: #61460d;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .disclaimer {
+            font-size: 12px !important;
+            color: #888888;
+            margin-top: 14px !important;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #555555;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>Online Jewellery System</h1>
+            <p class="subtitle">Welcome to my Python OOP project.</p>
+        </header>
+
+        <h2>Select Jewellery</h2>
+
+        <form action="/jewellery" method="POST">
+            <!-- Customer Name -->
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+
+            <!-- Jewellery Dropdown (Only Ring and Necklace) -->
+            <div class="form-group">
+                <label for="choice">Choose Jewellery:</label>
+                <select id="choice" name="choice" required>
+                    <option value="">-- Select an item --</option>
+                    <option value="1">Gold Ring - ₹50,000</option>
+                    <option value="2">Gold Necklace - ₹80,000</option>
+                </select>
+            </div>
+
+            <button type="submit">View Details</button>
+        </form>
+
+        {% if error %}
+            <div class="error-box">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Handles single item -->
+        {% if item %}
+            <div class="details-card">
+                <h2>Jewellery Details</h2>
+
+                <p style="margin-bottom: 12px;"><strong>Thank you,</strong> {{ name }}!</p>
+
+                <div class="item-row">
+                    <span><strong>Jewellery:</strong></span>
+                    <span>{{ item.name }}</span>
+                </div>
+                <div class="item-row">
+                    <span><strong>Price:</strong></span>
+                    <span>₹{{ price if price is defined else item.price }}</span>
+                </div>
+
+                <p class="disclaimer">This is a demo project. No real payment is processed.</p>
+            </div>
+
+        <!-- Handles item list if passed -->
+        {% elif items %}
+            <div class="details-card">
+                <h2>Jewellery Details</h2>
+
+                <p style="margin-bottom: 12px;"><strong>Thank you,</strong> {{ name }}!</p>
+
+                {% for itm in items %}
+                    <div class="item-row">
+                        <span>{{ itm.name }}</span>
+                        <span>₹{{ "{:,}".format(itm.price) }}</span>
+                    </div>
+                {% endfor %}
+
+                <div class="total-row">
+                    <span>Total Bill:</span>
+                    <span>₹{{ total_bill }}</span>
+                </div>
+
+                <p class="disclaimer">This is a demo project. No real payment is processed.</p>
+            </div>
+        {% endif %}
+
+        <a href="/" class="back-link">← Back to Portfolio</a>
+
+    </div>
+
+</body>
+</html>
